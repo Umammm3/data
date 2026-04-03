@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "Item": {
+      "title": "Item",
+      "description": "Data pendataan yang dicatat oleh user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID unik data" },
+        "code": { "type": "string", "description": "Kode unik pendataan" },
+        "name": { "type": "string", "description": "Nama user" },
+        "date": { "type": "string", "description": "Tanggal pendataan (YYYY-MM-DD)" },
+        "description": { "type": "string", "description": "Keterangan tambahan" },
+        "createdAt": { "type": "number", "description": "Timestamp pembuatan" }
+      },
+      "required": ["id", "code", "name", "date", "createdAt"]
+    }
+  },
+  "firestore": {
+    "items": {
+      "schema": { "$ref": "Item" },
+      "description": "Koleksi data pendataan publik."
+    }
+  }
+}
