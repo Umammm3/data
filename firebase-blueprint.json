@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "Item": {
+      "title": "Item",
+      "description": "Data pendataan yang dicatat oleh user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID unik data" },
+        "code": { "type": "string", "description": "Kode unik pendataan" },
+        "name": { "type": "string", "description": "Nama user" },
+        "date": { "type": "string", "description": "Tanggal pendataan (YYYY-MM-DD)" },
+        "description": { "type": "string", "description": "Keterangan tambahan" },
+        "createdAt": { "type": "number", "description": "Timestamp pembuatan" }
+      },
+      "required": ["id", "code", "name", "date", "createdAt"]
+    },
+    "Module": {
+      "title": "Module",
+      "description": "Modul pembelajaran atau dokumen yang diunggah admin.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID unik modul" },
+        "title": { "type": "string", "description": "Judul modul" },
+        "type": { "type": "string", "enum": ["photo", "document"], "description": "Tipe file" },
+        "fileUrl": { "type": "string", "description": "URL file di storage" },
+        "fileName": { "type": "string", "description": "Nama file asli" },
+        "createdAt": { "type": "number", "description": "Timestamp unggah" }
+      },
+      "required": ["id", "title", "type", "fileUrl", "fileName", "createdAt"]
+    }
+  },
+  "firestore": {
+    "items": {
+      "schema": { "$ref": "Item" },
+      "description": "Koleksi data pendataan publik."
+    },
+    "modules": {
+      "schema": { "$ref": "Module" },
+      "description": "Koleksi modul publik."
+    }
+  }
+}
