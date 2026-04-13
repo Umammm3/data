@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: items
+    // Document ID: auto-generated
+    // Fields:
+    //   - code: string (required, unique-ish via app logic)
+    //   - name: string (required)
+    //   - date: string (required, YYYY-MM-DD)
+    //   - description: string (optional)
+    //   - createdAt: number (required)
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidItem(data) {
+      return data.code is string && data.code.size() > 0 && data.code.size() < 100 &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 200 &&
+             data.date is string && data.date.matches("^\\d{4}-\\d{2}-\\d{2}$") &&
+             (data.description is string && data.description.size() < 1000) &&
+             data.createdAt is number;
+    }
+
+    match /test/connection {
+      allow read: if true;
+    }
+
+    match /items/{itemId} {
+      allow read, list: if true;
+      
+      allow create: if hasRequiredFields(['code', 'name', 'date', 'createdAt']) &&
+                      hasOnlyAllowedFields(['code', 'name', 'date', 'description', 'createdAt']) &&
+                      isValidItem(request.resource.data);
+      
+      allow delete: if true;
+
+      allow update: if hasRequiredFields(['code', 'name', 'date', 'createdAt']) &&
+                      hasOnlyAllowedFields(['code', 'name', 'date', 'description', 'createdAt']) &&
+                      isValidItem(request.resource.data);
+    }
+
+    match /modules/{moduleId} {
+      allow read, list: if true;
+      allow create: if hasRequiredFields(['title', 'link', 'createdAt']) &&
+                      request.resource.data.title is string &&
+                      request.resource.data.link is string &&
+                      request.resource.data.createdAt is number;
+      allow delete: if true;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
