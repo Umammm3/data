@@ -356,8 +356,8 @@ export default function App() {
           <motion.h1 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-3xl md:text-5xl font-bold tracking-tighter text-black mb-2">IT
-            <span className="text-slate-500">INTERN</span><span className="text-etiqa-yellow">ETIQA</span>
+            className="text-3xl md:text-5xl font-bold tracking-tighter text-slate-500 mb-2">IT
+            <span className="text-black">INTERN</span><span className="text-etiqa-yellow">ETIQA</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
